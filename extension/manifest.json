@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Rewrite news articles in Gen Z lingo.",
   "permissions": ["activeTab", "scripting", "storage"],
-  "host_permissions": ["http://127.0.0.1:8000/*"],
+  "host_permissions": ["https://ez-news-backend.onrender.com/*"],
   "background": {
     "service_worker": "service-worker.js"
   },

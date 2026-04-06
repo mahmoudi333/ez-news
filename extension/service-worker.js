@@ -1,5 +1,7 @@
 console.log("EZ News service-worker loaded");
 
+const API_BASE = "https://ez-news-backend.onrender.com";
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "REWRITE_ARTICLE") {
     handleRewrite(message.tabId, sendResponse);
@@ -216,7 +218,7 @@ async function handleRewrite(tabId, sendResponse) {
       }
     });
 
-    const res = await fetch("http://127.0.0.1:8000/rewrite", {
+    const res = await fetch(`${API_BASE}/rewrite`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -242,40 +244,10 @@ async function handleRewrite(tabId, sendResponse) {
       target: { tabId },
       args: [rewrittenHeadline, rewrittenBody],
       func: (rewrittenHeadline, rewrittenBody) => {
-        function resolvePath(path) {
-          let current = document.body;
-          for (const step of path) {
-            if (!current || !current.children || !current.children[step.index]) return null;
-            current = current.children[step.index];
-          }
-          return current;
-        }
-
         const h1s = Array.from(document.querySelectorAll("h1"));
         if (h1s.length && rewrittenHeadline) {
           h1s.sort((a, b) => (b.innerText || "").length - (a.innerText || "").length);
           h1s[0].textContent = rewrittenHeadline;
-        }
-
-        const paragraphNodes = Array.from(document.querySelectorAll("p")).filter(
-          p => (p.innerText || "").trim().length > 0
-        );
-
-        let rewrittenParagraphs = rewrittenBody
-          .split(/\n\s*\n/)
-          .map(p => p.trim())
-          .filter(Boolean);
-
-        if (paragraphNodes.length && rewrittenParagraphs.length === 1 && paragraphNodes.length > 1) {
-          const words = rewrittenParagraphs[0].split(/\s+/);
-          const chunkSize = Math.ceil(words.length / paragraphNodes.length);
-          rewrittenParagraphs = [];
-
-          for (let i = 0; i < paragraphNodes.length; i++) {
-            rewrittenParagraphs.push(
-              words.slice(i * chunkSize, (i + 1) * chunkSize).join(" ")
-            );
-          }
         }
       }
     });
