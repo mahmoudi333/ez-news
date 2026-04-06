@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>EZ News</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <div class="wrap">
+        <div class="top-glow"></div>
+
+        <div class="header">
+          <img src="icons/logo.png" alt="EZ News logo" class="logo" />
+        </div>
+
+        <div class="usage-card">
+          <div class="usage-label">Free rewrites</div>
+          <div class="usage-row">
+            <div class="counter" id="counter">Loading...</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="rewriteBtn" class="btn btn-primary">Rewrite article</button>
+          <button id="restoreBtn" class="btn btn-secondary">Restore original</button>
+          <button id="upgradeBtn" class="btn btn-upgrade">Upgrade to Unlimited</button>
+        </div>
+
+        <div class="status-card" id="statusCard">
+          <div class="loading-wrap hidden" id="loadingWrap">
+            <div class="loading-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="loading-text" id="loadingText">Cooking the article...</div>
+          </div>
+
+          <p id="status"></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
